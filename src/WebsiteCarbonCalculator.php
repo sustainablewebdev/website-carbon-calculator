@@ -186,7 +186,7 @@ class WebsiteCarbonCalculator {
             'isGreenHost' => $isGreenHost,
             'bytesTransferred' => $bytesTransfered,
 			'networkRequests' => count($lighthouseData->lighthouseResult->audits->{'network-requests'}->details->items),
-            'domSize' => $lighthouseData->lighthouseResult->audits->{'dom-size'}->numericValue,
+            'domSize' => $lighthouseData->lighthouseResult->audits->{'dom-size-insight'}->numericValue,
             'performanceScore' => $lighthouseData->lighthouseResult->categories->{'performance'}->score?:$performanceScore,
 			'loadingExperience' => $lighthouseData->loadingExperience->overall_category??0,
 			'speedIndex' => round($lighthouseData->lighthouseResult->audits->{'speed-index'}->numericValue),
