@@ -158,21 +158,19 @@ class WebsiteCarbonCalculator {
 		else
 			$isGreenHost = $options['isGreenHost']??false;
 
-		// If google page speed api didn't work
-		if(empty($lighthouseData->lighthouseResult->audits->{'network-requests'}->details->items))
+		// If Google page speed api didn't work
+		if(empty($lighthouseData->lighthouseResult->audits->{'network-requests'}->details->items??''))
 			throw new Exception('Google page speed API results is empty');
 
 		// Calc the transfer size
 		$bytesTransfered = self::calculateTransferedBytes(
-			$lighthouseData->lighthouseResult->audits->{'network-requests'}->details->items
+			$lighthouseData->lighthouseResult->audits->{'network-requests'}->details->items??[]
 		);
 
         $count = $performanceScore = 0;
-        foreach ($lighthouseData->lighthouseResult->audits as $audit){
+        foreach (($lighthouseData->lighthouseResult->audits??[]) as $audit){
 
-            if( is_numeric($audit->score) )
-            {
-
+            if( is_numeric($audit->score) ) {
                 $performanceScore += $audit->score;
                 $count ++;
             }
@@ -185,17 +183,17 @@ class WebsiteCarbonCalculator {
 			'url'   => $url,
             'isGreenHost' => $isGreenHost,
             'bytesTransferred' => $bytesTransfered,
-			'networkRequests' => count($lighthouseData->lighthouseResult->audits->{'network-requests'}->details->items),
-            'domSize' => $lighthouseData->lighthouseResult->audits->{'dom-size'}->numericValue,
-            'performanceScore' => $lighthouseData->lighthouseResult->categories->{'performance'}->score?:$performanceScore,
+			'networkRequests' => count($lighthouseData->lighthouseResult->audits->{'network-requests'}->details->items??[]),
+            'domSize' => $lighthouseData->lighthouseResult->audits->{'dom-size'}->numericValue??0,
+            'performanceScore' => $lighthouseData->lighthouseResult->categories->{'performance'}->score??$performanceScore,
 			'loadingExperience' => $lighthouseData->loadingExperience->overall_category??0,
-			'speedIndex' => round($lighthouseData->lighthouseResult->audits->{'speed-index'}->numericValue),
-			'firstContentfulPaint' => round($lighthouseData->lighthouseResult->audits->{'first-contentful-paint'}->numericValue),
-			'largestContentfulPaint' => round($lighthouseData->lighthouseResult->audits->{'largest-contentful-paint'}->numericValue),
-			'interactive' => round($lighthouseData->lighthouseResult->audits->{'interactive'}->numericValue),
-			'bootupTime' => round($lighthouseData->lighthouseResult->audits->{'bootup-time'}->numericValue),
-			'serverResponseTime' => round($lighthouseData->lighthouseResult->audits->{'server-response-time'}->numericValue),
-			'mainthreadWork' => round($lighthouseData->lighthouseResult->audits->{'mainthread-work-breakdown'}->numericValue)
+			'speedIndex' => round($lighthouseData->lighthouseResult->audits->{'speed-index'}->numericValue??0),
+			'firstContentfulPaint' => round($lighthouseData->lighthouseResult->audits->{'first-contentful-paint'}->numericValue??0),
+			'largestContentfulPaint' => round($lighthouseData->lighthouseResult->audits->{'largest-contentful-paint'}->numericValue??0),
+			'interactive' => round($lighthouseData->lighthouseResult->audits->{'interactive'}->numericValue??0),
+			'bootupTime' => round($lighthouseData->lighthouseResult->audits->{'bootup-time'}->numericValue??0),
+			'serverResponseTime' => round($lighthouseData->lighthouseResult->audits->{'server-response-time'}->numericValue??0),
+			'mainthreadWork' => round($lighthouseData->lighthouseResult->audits->{'mainthread-work-breakdown'}->numericValue??0)
 		];
 	}
 

@@ -97,3 +97,9 @@ Run tests
 ```shell
 $ pagespeedApiKey=xxxxxx php vendor/bin/phpunit
 ```
+
+### Changelog
+
+# 2.0.1
+
+- remove warnings thrown when Google API response is not complete
